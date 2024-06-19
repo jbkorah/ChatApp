@@ -40,6 +40,7 @@ flex-direction: column;
                 font-weight: 300;
                 color: #a5a5a5;
             }
+
         }
     }
 
@@ -57,6 +58,54 @@ flex-direction: column;
 .center{
     padding: 20px;
     flex: 1;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .message{
+        max-width: 70%;
+        display: flex;
+        gap: 20px;
+
+        &.own{
+            align-self: flex-end;
+
+            .texts{
+                p{
+                    background-color: rgb(7, 70, 92);
+                }
+            }
+        }
+
+        img{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .texts{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            p{
+                padding: 20px;
+                background-color: #171a20;
+                border-radius: 10px;
+            }
+            span{
+                font-size: 13px;
+            }
+            img{
+                width: 100%;
+                height: 300px;
+                border-radius: 10px;
+                object-fit: cover;
+            }
+        }
+    }
 }
 .bottom{
     padding: 20px;
