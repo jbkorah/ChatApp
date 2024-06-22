@@ -25,7 +25,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-const firebaseConfig = {
+const firebaseConfig = { 
   apiKey: "AIzaSyBWr7qUhLZn_0vWbKnvvPSv_6KEfB0-SAo",
   authDomain: "reactchat-a42fa.firebaseapp.com",
   projectId: "reactchat-a42fa",
