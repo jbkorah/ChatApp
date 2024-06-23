@@ -30,7 +30,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.target);
-
+    
     const { username, email, password } = Object.fromEntries(formData);
 
     try {
