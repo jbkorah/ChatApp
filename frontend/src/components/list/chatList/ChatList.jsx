@@ -11,7 +11,7 @@ const ChatList = () => {
   const [chats, setChats] = useState([]);
 
   const { currentUser } = useUserStore();
-  const { chatId,changeChat } = useChatStore();
+  const { chatId, changeChat } = useChatStore();
 
   useEffect(() => {
     const unSub = onSnapshot(
@@ -32,14 +32,15 @@ const ChatList = () => {
         setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
       }
     );
-      const handleSelect = async (chat) => {
-        changeChat(chat.chatId, chat.user)
-      }
+
     return () => {
       unSub();
     };
   }, [currentUser.id]);
   // console.log(chats);
+  const handleSelect = async (chat) => {
+    changeChat(chat.chatId, chat.user);
+  };
 
   return (
     <div className="chatList">
@@ -56,7 +57,11 @@ const ChatList = () => {
         />
       </div>
       {chats.map((chat) => (
-        <div className="item" key={chat.chatId} onClick={()=>handleSelect(chat)}>
+        <div
+          className="item"
+          key={chat.chatId}
+          onClick={() => handleSelect(chat)}
+        >
           <img src={chat.user.avatar || "./avatar.png"} alt="" />
           <div className="texts">
             <span>{chat.user.username}</span>
