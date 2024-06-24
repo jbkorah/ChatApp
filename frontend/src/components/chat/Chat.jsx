@@ -11,7 +11,7 @@ const Chat = () => {
   const [chat, setChat] = useState();
 
   const { chatId } = useChatStore();
-  const { currentUser, user  } = useUserStore();
+  const { currentUser, user } = useUserStore();
   const endRef = useRef(null);
 
   useEffect(() => {
@@ -38,83 +38,44 @@ const Chat = () => {
 
   const handleSend = async () => {
     if (text === "") return;
-  
 
-  try{
-    await updateDoc(doc(db, "chats", chatId),{
-      messages: arrayUnion({
-        senderId: currentUser.id,
-        text,
-        createdAt: new Date(),
-      })
-    })
+    try {
+      await updateDoc(doc(db, "chats", chatId), {
+        messages: arrayUnion({
+          senderId: currentUser.id,
+          text,
+          createdAt: new Date(),
+        }),
+      });
 
-    const userIDs = [currentUser.id, user.id];
+      const userIDs = [currentUser.id, user.id];
 
-    userIDs.forEach(async (id)=> {
+      userIDs.forEach(async (id) => {
+        const userChatsRef = doc(db, "userchats", id);
+        const userChatsSnapshot = await getDoc(userChatsRef);
 
-      
-      const userChatsRef = doc(db,"userchats", id)
-      const userChatsSnapshot = await getDoc(userChatsRef)
-      
-      if(userChatsRefSnapshopt.exists()){
-        const userChatsData = userChatsSnapshot.data()
-        
-        const chatIndex = userChatsData.chats.findIndex(c => c.chatId === chatId)
-        
-        userChatsData.chats[chatIndex].isSeen = id === currentUser.id ? true : false;
-        userChatsData.chats[chatIndex].lastMessage = text;
-        userChatsData.chats[chatIndex].updatedAt = Date.now();
-        
-        await updateDoc(userChatsRef, {
-          chats: userChatsData.chats,
-          
-        })
-      }
-    })
+        if (userChatsSnapshot.exists()) {
+          const userChatsData = userChatsSnapshot.data();
 
-  }catch(err){
-    console.log(err)
-  }
-}
-  // const handleSend = async () => {
-  //   if (text === "") return;
-  
-  //   try {
-  //     await updateDoc(doc(db, "chats", chatId), {
-  //       messages: arrayUnion({
-  //         senderId: currentUser.id,
-  //         text,
-  //         createdAt: new Date(),
-  //       }),
-  //     });
-  
-  //     const userIDs = [currentUser.id, user.id];
-  
-  //     userIDs.forEach(async (id) => {
-  //       const userChatsRef = doc(db, "userchats", id);
-  //       const userChatsSnapshot = await getDoc(userChatsRef);
-  
-  //       if (userChatsSnapshot.exists()) {
-  //         const userChatsData = userChatsSnapshot.data();
-  //         const chatIndex = userChatsData.chats.findIndex((c) => c.chatId === chatId);
-  
-  //         if (chatIndex !== -1) {
-  //           userChatsData.chats[chatIndex].lastMessage = text;
-  //           userChatsData.chats[chatIndex].isSeen = id === currentUser.id ? true : false;
-  //           userChatsData.chats[chatIndex].updatedAt = Date.now();
-  
-  //           await updateDoc(userChatsRef, {
-  //             chats: userChatsData.chats,
-  //           });
-  //         }
-  //       }
-  //     });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-  
+          const chatIndex = userChatsData.chats.findIndex(
+            (c) => c.chatId === chatId
+          );
+
+          userChatsData.chats[chatIndex].isSeen =
+            id === currentUser.id ? true : false;
+          userChatsData.chats[chatIndex].lastMessage = text;
+          userChatsData.chats[chatIndex].updatedAt = Date.now();
+
+          await updateDoc(userChatsRef, {
+            chats: userChatsData.chats,
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="chat">
       <div className="top">
@@ -133,7 +94,7 @@ const Chat = () => {
       </div>
       <div className="center">
         {chat?.messages?.map((message) => (
-          <div className="message own" key={message?.createdAt}>
+          <div className="message own" key={message?.createAt}>
             <div className="texts">
               {message.img && <img src={message.img} alt="" />}
               <p>{message.text}</p>
@@ -165,7 +126,9 @@ const Chat = () => {
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
         </div>
-        <button className="sendButton" onClick={handleSend}>Send</button>
+        <button className="sendButton" onClick={handleSend}>
+          Send
+        </button>
       </div>
     </div>
   );
