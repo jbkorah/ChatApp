@@ -153,6 +153,11 @@ flex-direction: column;
         border-radius: 5px;
         cursor: pointer;
 
+        &:disabled{
+            background-color: #5182feb4;
+            cursor: not-allowed;
+        }
+
     }
 }
 }
