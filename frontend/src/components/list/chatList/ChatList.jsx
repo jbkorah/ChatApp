@@ -90,7 +90,14 @@ const ChatList = () => {
             backgroundColor: chat?.isSeen ? "transparent" : "#5183fe",
           }}
         >
-          <img src="./avatar.png" alt="" />
+          <img
+            src={
+              chat.user.blocked.includes(currentUser.id)
+                ? "./avatar.png"
+                : chat.user.avatar || "./avatar.png"
+            }
+            alt=""
+          />
           <div className="texts">
             <span>
               {chat.user.blocked.includes(currentUser.id)

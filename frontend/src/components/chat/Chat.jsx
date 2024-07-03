@@ -55,7 +55,7 @@ const Chat = () => {
         url: URL.createObjectURL(e.target.files[0]),
       });
     }
-  };
+  };      
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -177,7 +177,7 @@ const Chat = () => {
           disabled={isCurrentUserBlocked || isReceiverBlocked}
           placeholder={
             isCurrentUserBlocked || isReceiverBlocked
-              ? "you cannot sent a message"
+              ? "You cannot send a Message."
               : "Type a message ... "
           }
           value={text}

@@ -135,6 +135,11 @@ flex-direction: column;
         padding: 20px;
         border-radius: 10px;
         font-size: 16px;
+
+        &:disabled{
+            background-color: #5182feb4;
+            cursor: not-allowed;
+        }
     }
     .emoji{
         position: relative;
